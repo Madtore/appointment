@@ -15,15 +15,17 @@ import jakarta.validation.constraints.Size;
  * @author madtore
  */
 public record PatientDTO(
-        @NotNull(message = "Patient ID cannot be null") Long id,
+                @NotNull(message = "Patient ID cannot be null") Long id,
 
-        @NotNull(message = "Date of birth cannot be null") LocalDate dateOfBirth,
+                @NotNull(message = "User ID cannot be null") Long userId,
 
-        @NotNull(message = "Gender cannot be null") String gender,
+                @NotNull(message = "Date of birth cannot be null") LocalDate dateOfBirth,
 
-        @Size(max = 1000, message = "Medical history cannot exceed 1000 characters") String medicalHistory,
+                @NotNull(message = "Gender cannot be null") String gender,
 
-        LocalDate createdAt,
-        LocalDate updatedAt,
-        LocalDate deletedAt) {
+                @Size(max = 1000, message = "Medical history cannot exceed 1000 characters") String medicalHistory,
+
+                LocalDate createdAt,
+                LocalDate updatedAt,
+                LocalDate deletedAt) {
 }

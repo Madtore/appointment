@@ -5,8 +5,6 @@
 
 package com.mindlink.service.appointment.services;
 
-import java.util.List;
-
 import com.mindlink.service.appointment.models.dtos.PsychologistDTO;
 
 /**
@@ -15,14 +13,10 @@ import com.mindlink.service.appointment.models.dtos.PsychologistDTO;
  */
 public interface PsychologistService {
 
-    PsychologistDTO getPsychologist(Long psychologistId);
+    PsychologistDTO getPsychologist(Long psychologistId) throws Exception;
 
-    PsychologistDTO createPsychologist(PsychologistDTO psychologistDTO);
+    PsychologistDTO createPsychologist(PsychologistDTO psychologistDTO) throws Exception;
 
-    PsychologistDTO updatePsychologist(Long psychologistId, PsychologistDTO psychologistDTO);
-
-    void deletePsychologist(Long psychologistId);
-
-    List<PsychologistDTO> getAllPsychologists();
+    void deletePsychologist(Long psychologistId) throws Exception;
 
 }

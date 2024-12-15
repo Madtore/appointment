@@ -5,11 +5,13 @@
 
 package com.mindlink.service.appointment.services.servicesImp;
 
-import java.util.List;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.mindlink.service.appointment.models.Patient;
 import com.mindlink.service.appointment.models.dtos.PatientDTO;
+import com.mindlink.service.appointment.repositories.PatientRepository;
+import com.mindlink.service.appointment.repositories.UserRepository;
 import com.mindlink.service.appointment.services.PatientService;
 
 /**
@@ -19,34 +21,56 @@ import com.mindlink.service.appointment.services.PatientService;
 @Service
 public class PatientServiceImpl implements PatientService {
 
+    @Autowired
+    private PatientRepository patientRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
     @Override
-    public List<PatientDTO> getAllPatients() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAllPatients'");
+    public PatientDTO getPatientById(Long id) throws Exception {
+        Patient patient = patientRepository.findById(id).orElse(null);
+        PatientDTO patientDTO = new PatientDTO(
+                patient.getId(),
+                patient.getUser().getId(),
+                patient.getDateOfBirth(),
+                patient.getGender(),
+                patient.getMedicalHistory(),
+                patient.getCreatedAt(),
+                patient.getUpdatedAt(),
+                patient.getDeletedAt());
+
+        return patientDTO;
     }
 
     @Override
-    public PatientDTO getPatientById(Long id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getPatientById'");
+    public PatientDTO createPatient(PatientDTO patientDTO) throws Exception {
+        Patient patient = new Patient();
+        patient.setDateOfBirth(patientDTO.dateOfBirth());
+        patient.setGender(patientDTO.gender());
+        patient.setMedicalHistory(patientDTO.medicalHistory());
+        patient.setUser(userRepository.findById(patientDTO.userId()).orElse(null));
+        patient.setCreatedAt(patientDTO.createdAt());
+        patient.setUpdatedAt(patientDTO.updatedAt());
+        patient.setDeletedAt(patientDTO.deletedAt());
+        patient = patientRepository.save(patient);
+
+        return patientDTO;
     }
 
     @Override
-    public PatientDTO createPatient(PatientDTO patientDTO) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'createPatient'");
-    }
+    public PatientDTO updatePatient(Long id, PatientDTO patientDTO) throws Exception {
+        Patient patient = patientRepository.findById(id).orElse(null);
+        patient.setDateOfBirth(patientDTO.dateOfBirth());
+        patient.setGender(patientDTO.gender());
+        patient.setMedicalHistory(patientDTO.medicalHistory());
+        patient.setUser(userRepository.findById(patientDTO.userId()).orElse(null));
+        patient.setCreatedAt(patientDTO.createdAt());
+        patient.setUpdatedAt(patientDTO.updatedAt());
+        patient.setDeletedAt(patientDTO.deletedAt());
+        patient = patientRepository.save(patient);
 
-    @Override
-    public PatientDTO updatePatient(Long id, PatientDTO patientDTO) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updatePatient'");
-    }
-
-    @Override
-    public void deletePatient(Long id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deletePatient'");
+        return patientDTO;
     }
 
 }

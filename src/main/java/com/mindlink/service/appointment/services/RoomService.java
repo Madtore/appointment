@@ -5,8 +5,6 @@
 
 package com.mindlink.service.appointment.services;
 
-import java.util.List;
-
 import com.mindlink.service.appointment.models.dtos.RoomDTO;
 
 /**
@@ -15,14 +13,8 @@ import com.mindlink.service.appointment.models.dtos.RoomDTO;
  */
 public interface RoomService {
 
-    RoomDTO createRoom(RoomDTO roomDTO);
+    RoomDTO getRoomDetails(String roomId, String password);
 
-    RoomDTO updateRoom(Long id, RoomDTO roomDTO);
-
-    void deleteRoom(Long id);
-
-    RoomDTO getRoomById(Long id);
-
-    List<RoomDTO> getAllRooms();
+    boolean verifyPassword(String roomId, Object password);
 
 }

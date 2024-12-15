@@ -15,14 +15,10 @@ import com.mindlink.service.appointment.models.dtos.PatientDTO;
  */
 public interface PatientService {
 
-    List<PatientDTO> getAllPatients();
+    PatientDTO getPatientById(Long id) throws Exception;
 
-    PatientDTO getPatientById(Long id);
+    PatientDTO createPatient(PatientDTO patientDTO) throws Exception;
 
-    PatientDTO createPatient(PatientDTO patientDTO);
-
-    PatientDTO updatePatient(Long id, PatientDTO patientDTO);
-
-    void deletePatient(Long id);
+    PatientDTO updatePatient(Long id, PatientDTO patientDTO) throws Exception;
 
 }

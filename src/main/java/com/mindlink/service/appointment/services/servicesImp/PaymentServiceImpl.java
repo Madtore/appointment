@@ -19,7 +19,7 @@ import com.mindlink.service.appointment.services.PaymentService;
 public class PaymentServiceImpl implements PaymentService {
 
     @Override
-    public PaymentDTO createPayment(Payment payment) {
+    public PaymentDTO createPayment(PaymentDTO payment) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'createPayment'");
     }

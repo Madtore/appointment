@@ -15,15 +15,17 @@ import jakarta.validation.constraints.Positive;
  * @author madtore
  */
 public record PsychologistDTO(
-        @NotNull(message = "Psychologist ID cannot be null") Long id,
+                @NotNull(message = "Psychologist ID cannot be null") Long id,
 
-        @NotNull(message = "License number cannot be null") String licenseNumber,
+                @NotNull(message = "User ID cannot be null") Long userId,
 
-        @NotNull(message = "Specialization cannot be null") String specialization,
+                @NotNull(message = "License number cannot be null") String licenseNumber,
 
-        @Positive(message = "Rate per hour must be positive") Double ratePerHour,
+                @NotNull(message = "Specialization cannot be null") String specialization,
 
-        LocalDate createdAt,
-        LocalDate updatedAt,
-        LocalDate deletedAt) {
+                @Positive(message = "Rate per hour must be positive") Double ratePerHour,
+
+                LocalDate createdAt,
+                LocalDate updatedAt,
+                LocalDate deletedAt) {
 }

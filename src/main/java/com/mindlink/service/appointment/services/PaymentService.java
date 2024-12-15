@@ -14,7 +14,7 @@ import com.mindlink.service.appointment.models.dtos.PaymentDTO;
  */
 public interface PaymentService {
 
-    PaymentDTO createPayment(Payment payment);
+    PaymentDTO createPayment(PaymentDTO payment);
 
     PaymentDTO updatePayment(Long id, Payment payment);
 

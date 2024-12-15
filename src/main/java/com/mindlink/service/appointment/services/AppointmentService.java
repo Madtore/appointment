@@ -5,8 +5,6 @@
 
 package com.mindlink.service.appointment.services;
 
-import java.util.List;
-
 import com.mindlink.service.appointment.models.dtos.AppointmentDTO;
 
 /**
@@ -15,13 +13,11 @@ import com.mindlink.service.appointment.models.dtos.AppointmentDTO;
  */
 public interface AppointmentService {
 
-    AppointmentDTO createAppointment(AppointmentDTO appintmentDTO);
+    AppointmentDTO createAppointment(AppointmentDTO appintmentDTO) throws Exception;
 
-    List<AppointmentDTO> getAllAppointments();
+    AppointmentDTO getAppointmentById(Long id) throws Exception;
 
-    AppointmentDTO getAppointmentById(Long id);
+    void deleteAppointment(Long id) throws Exception;
 
-    void deleteAppointment(Long id);
-
-    AppointmentDTO updateAppointment(Long id, AppointmentDTO appintmentDTO);
+    void joinRoom(Long id) throws Exception;
 }

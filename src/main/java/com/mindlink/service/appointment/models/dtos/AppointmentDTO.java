@@ -19,21 +19,21 @@ import jakarta.validation.constraints.Size;
  * @author madtore
  */
 public record AppointmentDTO(
-                @NotNull(message = "Appointment ID cannot be null") Long id,
+        @NotNull(message = "Appointment ID cannot be null") Long id,
 
-                @NotNull(message = "Psychologist ID cannot be null") Long psychologistId,
+        @NotNull(message = "Psychologist ID cannot be null") Long psychologistId,
 
-                @NotNull(message = "Patient ID cannot be null") Long patientId,
+        @NotNull(message = "Patient ID cannot be null") Long patientId,
 
-                @Positive(message = "Total cost must be positive") Double totalCost,
+        @Positive(message = "Total cost must be positive") Double totalCost,
 
-                @NotNull(message = "Appointment date cannot be null") @Future(message = "Appointment date must be in the future") LocalDate appointmentDate,
+        @NotNull(message = "Appointment date cannot be null") @Future(message = "Appointment date must be in the future") LocalDate appointmentDate,
 
-                @Min(value = 1, message = "Rating must be between 1 and 5") @Max(value = 5, message = "Rating must be between 1 and 5") Integer rating,
+        @Min(value = 1, message = "Rating must be between 1 and 5") @Max(value = 5, message = "Rating must be between 1 and 5") Integer rating,
 
-                @Size(max = 500, message = "Feedback cannot exceed 500 characters") String feedback,
+        @Size(max = 500, message = "Feedback cannot exceed 500 characters") String feedback,
 
-                LocalDate createdAt,
-                LocalDate updatedAt,
-                LocalDate deletedAt) {
+        LocalDate createdAt,
+        LocalDate updatedAt,
+        LocalDate deletedAt) {
 }

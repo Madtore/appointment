@@ -41,7 +41,6 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Override
     public AppointmentDTO createAppointment(AppointmentDTO appointmentDTO) {
-        // Buscar entidades con manejo de Optional
         Psychologist psychologist = psychologistRepository.findById(appointmentDTO.psychologistId())
                 .orElseThrow(() -> new EntityNotFoundException(
                         "Psychologist not found with id: " + appointmentDTO.psychologistId()));
@@ -50,27 +49,22 @@ public class AppointmentServiceImpl implements AppointmentService {
                 .orElseThrow(
                         () -> new EntityNotFoundException("Patient not found with id: " + appointmentDTO.patientId()));
 
-        // Crear la cita
         Appointment newAppointment = new Appointment();
         newAppointment.setPsychologist(psychologist);
         newAppointment.setPatient(patient);
         newAppointment.setTotalCost(appointmentDTO.totalCost());
         newAppointment.setAppointmentDate(appointmentDTO.appointmentDate());
-        newAppointment.setCreatedAt(LocalDate.now()); // Usar LocalDateTime en lugar de LocalDate
+        newAppointment.setCreatedAt(LocalDate.now());
 
-        // Crear la sala
         Room room = new Room();
         room.setRoomUrl(UUID.randomUUID().toString());
         room.setPassword(UUID.randomUUID().toString());
 
-        // Establecer relación bidireccional
         room.setAppointment(newAppointment);
         newAppointment.setRoom(room);
 
-        // Guardar la cita (cascadeará el guardado de la sala si está configurado)
         Appointment savedAppointment = appointmentRepository.save(newAppointment);
 
-        // Retornar un nuevo DTO con los datos actualizados
         return new AppointmentDTO(
                 savedAppointment.getId(),
                 savedAppointment.getPsychologist().getId(),

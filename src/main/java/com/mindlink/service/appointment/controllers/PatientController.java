@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 
 package com.mindlink.service.appointment.controllers;
 
@@ -9,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,32 +24,25 @@ public class PatientController {
     @Autowired
     private PatientService patientService;
 
-    @PostMapping
-    public ResponseEntity<PatientDTO> createPatient(@RequestBody PatientDTO patientDTO) {
-        try {
-            return ResponseEntity.ok(patientService.createPatient(patientDTO));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
-    }
-
     @GetMapping("/{id}")
-    public ResponseEntity<PatientDTO> getPatient(@RequestBody Long id) {
+    public ResponseEntity<PatientDTO> getPatient(@PathVariable Long id) {
         try {
-            return ResponseEntity.ok(patientService.getPatientById(id));
+            PatientDTO patient = patientService.getPatientById(id);
+            return ResponseEntity.ok(patient);
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PatientDTO> updatePatient(@PathVariable Long id,
+    public ResponseEntity<PatientDTO> updatePatient(
+            @PathVariable Long id,
             @RequestBody PatientDTO patientDTO) {
         try {
-            return ResponseEntity.ok(patientService.updatePatient(id, patientDTO));
+            PatientDTO updatedPatient = patientService.updatePatient(id, patientDTO);
+            return ResponseEntity.ok(updatedPatient);
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
     }
-
 }

@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 
 package com.mindlink.service.appointment.controllers;
 
@@ -9,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,7 +22,7 @@ import com.mindlink.service.appointment.services.PaymentService;
  */
 @RestController
 @RequestMapping("/appointments")
-public class AppoimentController {
+public class AppointmentController {
 
     @Autowired
     private AppointmentService appointmentService;
@@ -34,16 +31,16 @@ public class AppoimentController {
     private PaymentService paymentService;
 
     @PostMapping
-    public ResponseEntity<AppointmentDTO> createAppointment(@RequestBody AppointmentDTO appintmentDTO) {
+    public ResponseEntity<AppointmentDTO> createAppointment(@RequestBody AppointmentDTO appointmentDTO) {
         try {
-            return ResponseEntity.ok(appointmentService.createAppointment(appintmentDTO));
+            return ResponseEntity.ok(appointmentService.createAppointment(appointmentDTO));
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AppointmentDTO> getAppointmentById(@RequestBody Long id) {
+    public ResponseEntity<AppointmentDTO> getAppointmentById(@PathVariable Long id) {
         try {
             return ResponseEntity.ok(appointmentService.getAppointmentById(id));
         } catch (Exception e) {
@@ -52,7 +49,7 @@ public class AppoimentController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteAppointment(@RequestBody Long id) {
+    public ResponseEntity<Void> deleteAppointment(@PathVariable Long id) {
         try {
             appointmentService.deleteAppointment(id);
             return ResponseEntity.ok().build();
@@ -62,7 +59,9 @@ public class AppoimentController {
     }
 
     @PostMapping("/{id}/payment")
-    public ResponseEntity<PaymentDTO> createPayment(@RequestBody PaymentDTO paymentDTO) {
+    public ResponseEntity<PaymentDTO> createPayment(
+            @PathVariable Long id,
+            @RequestBody PaymentDTO paymentDTO) {
         try {
             return ResponseEntity.ok(paymentService.createPayment(paymentDTO));
         } catch (Exception e) {
@@ -71,7 +70,7 @@ public class AppoimentController {
     }
 
     @PostMapping("/{id}/join-room")
-    public ResponseEntity<Void> joinRoom(@RequestBody Long id) {
+    public ResponseEntity<Void> joinRoom(@PathVariable Long id) {
         try {
             appointmentService.joinRoom(id);
             return ResponseEntity.ok().build();
@@ -79,5 +78,4 @@ public class AppoimentController {
             return ResponseEntity.badRequest().build();
         }
     }
-
 }

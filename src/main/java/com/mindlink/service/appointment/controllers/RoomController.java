@@ -1,22 +1,18 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 
 package com.mindlink.service.appointment.controllers;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mindlink.service.appointment.models.dtos.RoomDTO;
 import com.mindlink.service.appointment.services.RoomService;
 import com.mindlink.service.appointment.utils.handlerclass.PasswordVerificationRequest;
 
@@ -39,11 +35,42 @@ public class RoomController {
         return ResponseEntity.ok(isValid);
     }
 
-    @GetMapping("/{roomId}/join")
-    public ResponseEntity<RoomDTO> joinRoom(
-            @PathVariable String roomId,
-            @RequestParam String password) {
-        RoomDTO details = roomService.getRoomDetails(roomId, password);
-        return ResponseEntity.ok(details);
+    @MessageMapping("/join")
+    @SendTo("/topic/room")
+    public Map<String, Object> joinRoom(Map<String, Object> message) {
+        return Map.of(
+                "type", "USER_JOINED",
+                "userId", message.get("userId"),
+                "roomId", message.get("roomId"));
+    }
+
+    @MessageMapping("/offer")
+    @SendTo("/topic/room")
+    public Map<String, Object> handleOffer(Map<String, Object> message) {
+        return Map.of(
+                "type", "OFFER",
+                "offer", message.get("offer"),
+                "userId", message.get("userId"),
+                "targetUserId", message.get("targetUserId"));
+    }
+
+    @MessageMapping("/answer")
+    @SendTo("/topic/room")
+    public Map<String, Object> handleAnswer(Map<String, Object> message) {
+        return Map.of(
+                "type", "ANSWER",
+                "answer", message.get("answer"),
+                "userId", message.get("userId"),
+                "targetUserId", message.get("targetUserId"));
+    }
+
+    @MessageMapping("/ice-candidate")
+    @SendTo("/topic/room")
+    public Map<String, Object> handleIceCandidate(Map<String, Object> message) {
+        return Map.of(
+                "type", "ICE_CANDIDATE",
+                "candidate", message.get("candidate"),
+                "userId", message.get("userId"),
+                "targetUserId", message.get("targetUserId"));
     }
 }

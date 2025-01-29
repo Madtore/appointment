@@ -5,10 +5,14 @@
 
 package com.mindlink.service.appointment.repositories;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.mindlink.service.appointment.models.Appointment;
+import com.mindlink.service.appointment.models.dtos.AppointmentDTO;
 
 /**
  *
@@ -16,5 +20,13 @@ import com.mindlink.service.appointment.models.Appointment;
  */
 @Repository
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
+
+    Appointment create(AppointmentDTO appointmentDTO);
+
+    List<Appointment> findAll();
+
+    Optional<Appointment> findById(Long id);
+
+    void deleteById(Long id);
 
 }

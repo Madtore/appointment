@@ -5,8 +5,6 @@
 
 package com.mindlink.service.appointment.services;
 
-import java.util.List;
-
 import com.mindlink.service.appointment.models.dtos.PatientDTO;
 
 /**

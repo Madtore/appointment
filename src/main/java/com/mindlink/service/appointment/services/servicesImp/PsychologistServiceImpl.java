@@ -32,44 +32,20 @@ public class PsychologistServiceImpl implements PsychologistService {
 
     @Override
     public PsychologistDTO getPsychologist(Long psychologistId) throws Exception {
-        Psychologist psychologist = psychologistRepository.findById(psychologistId)
-                .orElseThrow(() -> new Exception("Psychologist not found"));
-
-        PsychologistDTO psychologistDTO = new PsychologistDTO(
-                psychologist.getId(),
-                psychologist.getUser().getId(),
-                psychologist.getLicenseNumber(),
-                psychologist.getSpecialization(),
-                psychologist.getRatePerHour(),
-                psychologist.getCreatedAt(),
-                psychologist.getUpdatedAt(),
-                psychologist.getDeletedAt());
-
-        return psychologistDTO;
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getPsychologist'");
     }
 
     @Override
-    public PsychologistDTO createPsychologist(PsychologistDTO psychologistDTO) {
-        Psychologist psychologist = new Psychologist();
-
-        psychologist.setLicenseNumber(psychologistDTO.licenseNumber());
-        psychologist.setSpecialization(psychologistDTO.specialization());
-        psychologist.setRatePerHour(psychologistDTO.ratePerHour());
-        User user = userRepository.findById(psychologistDTO.userId()).orElse(null);
-        psychologist.setUser(user);
-        psychologist.setCreatedAt(LocalDate.now());
-        psychologist.setUpdatedAt(null);
-        psychologist.setDeletedAt(null);
-        psychologistRepository.save(psychologist);
-
-        return psychologistDTO;
+    public PsychologistDTO createPsychologist(PsychologistDTO psychologistDTO) throws Exception {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'createPsychologist'");
     }
 
     @Override
-    public void deletePsychologist(Long psychologistId) {
-        Psychologist psychologist = psychologistRepository.findById(psychologistId).orElse(null);
-        psychologist.setDeletedAt(LocalDate.now());
-        psychologistRepository.save(psychologist);
+    public void deletePsychologist(Long psychologistId) throws Exception {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'deletePsychologist'");
     }
 
 }

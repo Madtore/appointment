@@ -5,8 +5,10 @@
 
 package com.mindlink.service.appointment.services.servicesImp;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.mindlink.service.appointment.models.User;
 import com.mindlink.service.appointment.services.UserService;
 
 /**
@@ -15,5 +17,13 @@ import com.mindlink.service.appointment.services.UserService;
  */
 @Service
 public class UserServiceImpl implements UserService {
+
+    @Autowired
+    private UserService userService;
+
+    @Override
+    public User create(User user) {
+        return userService.create(user);
+    }
 
 }

@@ -25,18 +25,14 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public RoomDTO getRoomDetails(String roomId, String password) {
-        Room room = roomRepository.findById(Long.valueOf(roomId)).get();
-        return new RoomDTO(
-                room.getId(),
-                room.getRoomId(),
-                room.getRoomUrl(),
-                room.getPassword());
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getRoomDetails'");
     }
 
     @Override
     public boolean verifyPassword(String roomId, Object password) {
-        Room room = roomRepository.findById(Long.valueOf(roomId)).get();
-        return room.getPassword().equals(password);
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'verifyPassword'");
     }
 
 }

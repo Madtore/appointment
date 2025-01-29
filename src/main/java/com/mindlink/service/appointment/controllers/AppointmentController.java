@@ -11,9 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mindlink.service.appointment.models.dtos.AppointmentDTO;
-import com.mindlink.service.appointment.models.dtos.PaymentDTO;
 import com.mindlink.service.appointment.services.AppointmentService;
+import com.mindlink.service.appointment.models.dtos.AppointmentDTO;
 import com.mindlink.service.appointment.services.PaymentService;
 
 /**
@@ -26,9 +25,6 @@ public class AppointmentController {
 
     @Autowired
     private AppointmentService appointmentService;
-
-    @Autowired
-    private PaymentService paymentService;
 
     @PostMapping
     public ResponseEntity<AppointmentDTO> createAppointment(@RequestBody AppointmentDTO appointmentDTO) {
@@ -53,17 +49,6 @@ public class AppointmentController {
         try {
             appointmentService.deleteAppointment(id);
             return ResponseEntity.ok().build();
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
-    }
-
-    @PostMapping("/{id}/payment")
-    public ResponseEntity<PaymentDTO> createPayment(
-            @PathVariable Long id,
-            @RequestBody PaymentDTO paymentDTO) {
-        try {
-            return ResponseEntity.ok(paymentService.createPayment(paymentDTO));
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }

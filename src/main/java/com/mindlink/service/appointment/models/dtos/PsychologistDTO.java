@@ -1,31 +1,24 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Record.java to edit this template
- */
-
 package com.mindlink.service.appointment.models.dtos;
 
 import java.time.LocalDate;
 
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-/**
- *
- * @author madtore
- */
-public record PsychologistDTO(
-                @NotNull(message = "Psychologist ID cannot be null") Long id,
+@Data
+@Getter
+@Setter
+public class PsychologistDTO {
 
-                @NotNull(message = "User ID cannot be null") Long userId,
+    private String firstname;
+    private String lastname;
+    private LocalDate dateOfBirth;
+    private String gender;
+    private String medicalHistory;
 
-                @NotNull(message = "License number cannot be null") String licenseNumber,
+    private String email;
 
-                @NotNull(message = "Specialization cannot be null") String specialization,
-
-                @Positive(message = "Rate per hour must be positive") Double ratePerHour,
-
-                LocalDate createdAt,
-                LocalDate updatedAt,
-                LocalDate deletedAt) {
+    private LocalDate createdAt;
+    private LocalDate updatedAt;
 }

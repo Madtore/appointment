@@ -21,8 +21,6 @@ import com.mindlink.service.appointment.repositories.PatientRepository;
 import com.mindlink.service.appointment.repositories.PsychologistRepository;
 import com.mindlink.service.appointment.services.AppointmentService;
 
-import jakarta.persistence.EntityNotFoundException;
-
 /**
  *
  * @author madtore
@@ -33,72 +31,26 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Autowired
     private AppointmentRepository appointmentRepository;
 
-    @Autowired
-    private PatientRepository patientRepository;
-
-    @Autowired
-    private PsychologistRepository psychologistRepository;
-
     @Override
-    public AppointmentDTO createAppointment(AppointmentDTO appointmentDTO) {
-        Psychologist psychologist = psychologistRepository.findById(appointmentDTO.psychologistId())
-                .orElseThrow(() -> new EntityNotFoundException(
-                        "Psychologist not found with id: " + appointmentDTO.psychologistId()));
+    public AppointmentDTO createAppointment(AppointmentDTO appintmentDTO) throws Exception {
+        Appointment appointment = new Appointment();
+        appointment.setCreatedAt(LocalDate.now());
+        appointment.setAppointmentDate(appintmentDTO.getAppointmentDate());
+        appointment.set
 
-        Patient patient = patientRepository.findById(appointmentDTO.patientId())
-                .orElseThrow(
-                        () -> new EntityNotFoundException("Patient not found with id: " + appointmentDTO.patientId()));
-
-        Appointment newAppointment = new Appointment();
-        newAppointment.setPsychologist(psychologist);
-        newAppointment.setPatient(patient);
-        newAppointment.setTotalCost(appointmentDTO.totalCost());
-        newAppointment.setAppointmentDate(appointmentDTO.appointmentDate());
-        newAppointment.setCreatedAt(LocalDate.now());
-
-        Room room = new Room();
-        room.setRoomUrl(UUID.randomUUID().toString());
-        room.setPassword(UUID.randomUUID().toString());
-
-        room.setAppointment(newAppointment);
-        newAppointment.setRoom(room);
-
-        Appointment savedAppointment = appointmentRepository.save(newAppointment);
-
-        return new AppointmentDTO(
-                savedAppointment.getId(),
-                savedAppointment.getPsychologist().getId(),
-                savedAppointment.getPatient().getId(),
-                savedAppointment.getTotalCost(),
-                savedAppointment.getAppointmentDate(),
-                null, // rating
-                null, // feedback
-                savedAppointment.getCreatedAt(),
-                null, // updatedAt
-                null // deletedAt
-        );
+        return null;
     }
 
     @Override
     public AppointmentDTO getAppointmentById(Long id) throws Exception {
-        Appointment appointment = appointmentRepository.findById(id).get();
-        AppointmentDTO appointmentDTO = new AppointmentDTO(
-                appointment.getId(), appointment.getPsychologist().getId(), appointment.getPatient().getId(),
-                appointment.getTotalCost(), appointment.getAppointmentDate(),
-                appointment.getRating(),
-                appointment.getFeedback(),
-                appointment.getCreatedAt(),
-                appointment.getUpdatedAt(),
-                appointment.getDeletedAt());
-
-        return appointmentDTO;
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getAppointmentById'");
     }
 
     @Override
     public void deleteAppointment(Long id) throws Exception {
-        Appointment appointment = appointmentRepository.findById(id).get();
-        appointment.setDeletedAt(LocalDate.now());
-        appointmentRepository.save(appointment);
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'deleteAppointment'");
     }
 
     @Override

@@ -8,7 +8,7 @@ package com.mindlink.service.appointment.services.servicesImp;
 import org.springframework.stereotype.Service;
 
 import com.mindlink.service.appointment.models.Payment;
-import com.mindlink.service.appointment.models.dtos.PaymentDTO;
+
 import com.mindlink.service.appointment.services.PaymentService;
 
 /**
@@ -17,29 +17,5 @@ import com.mindlink.service.appointment.services.PaymentService;
  */
 @Service
 public class PaymentServiceImpl implements PaymentService {
-
-    @Override
-    public PaymentDTO createPayment(PaymentDTO payment) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'createPayment'");
-    }
-
-    @Override
-    public PaymentDTO updatePayment(Long id, Payment payment) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updatePayment'");
-    }
-
-    @Override
-    public void deletePayment(Long id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deletePayment'");
-    }
-
-    @Override
-    public PaymentDTO getPaymentById(Long id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getPaymentById'");
-    }
 
 }

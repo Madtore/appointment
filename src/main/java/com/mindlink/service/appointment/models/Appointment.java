@@ -7,6 +7,7 @@ package com.mindlink.service.appointment.models;
 
 import java.time.LocalDate;
 
+import io.micrometer.common.lang.Nullable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -14,6 +15,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -40,9 +42,15 @@ public class Appointment {
     @ManyToOne
     @JoinColumn(name = "patient_id", nullable = false)
     private Patient patient;
+    @NotNull
     private Double totalCost;
+    @NotNull
     private LocalDate appointmentDate;
+
+    @Nullable
     private Integer rating;
+
+    @Nullable
     private String feedback;
 
     @OneToOne(mappedBy = "appointment")
@@ -51,8 +59,11 @@ public class Appointment {
     @OneToOne(mappedBy = "appointment")
     private Payment payment; // Relación con Payment
 
+    @NotNull
     private LocalDate createdAt;
+    @Nullable
     private LocalDate updatedAt;
+    @Nullable
     private LocalDate deletedAt;
 
 }

@@ -29,14 +29,13 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     public PatientDTO getPatientById(Long id) throws Exception {
-        Patient patient = patientRepository.findById(id).orElse(null);
-        return new PatientDTO(id, id, null, null, null, null, null, null);
+        Patient patient = patientRepository.findById(id).orElse(new Throwable("Patient not found"));
+        return null;
     }
 
     @Override
     public PatientDTO createPatient(PatientDTO patientDTO) throws Exception {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'createPatient'");
+
     }
 
     @Override

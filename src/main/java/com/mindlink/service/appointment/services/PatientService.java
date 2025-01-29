@@ -5,6 +5,9 @@
 
 package com.mindlink.service.appointment.services;
 
+import java.util.List;
+
+import com.mindlink.service.appointment.models.Patient;
 import com.mindlink.service.appointment.models.dtos.PatientDTO;
 
 /**
@@ -13,10 +16,11 @@ import com.mindlink.service.appointment.models.dtos.PatientDTO;
  */
 public interface PatientService {
 
-    PatientDTO getPatientById(Long id) throws Exception;
+    Patient createPatient(PatientDTO patientDTO);
 
-    PatientDTO createPatient(PatientDTO patientDTO) throws Exception;
+    List<PatientDTO> getAllPatients();
 
-    PatientDTO updatePatient(Long id, PatientDTO patientDTO) throws Exception;
+    Patient updatePatient(Long id, PatientDTO patientDTO);
 
+    void deletePatient(Long id);
 }

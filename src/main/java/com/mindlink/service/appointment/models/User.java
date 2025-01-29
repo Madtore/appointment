@@ -7,7 +7,11 @@ package com.mindlink.service.appointment.models;
 
 import java.time.LocalDate;
 
+import org.hibernate.validator.constraints.UniqueElements;
+
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.NotNull;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -32,12 +36,14 @@ import io.micrometer.common.lang.Nullable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Table(name = "users")
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @UniqueElements
     private String email;
     private String passwordHash;
 

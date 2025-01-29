@@ -19,10 +19,6 @@ import com.mindlink.service.appointment.models.Room;
 @Repository
 public interface RoomRepository extends JpaRepository<Room, Long> {
 
-    Room create(Room room);
-
-    Optional<Room> findById(Long id);
-
-    void deleteById(Long id);
+    Optional<Room> findByAppointmentId(Long appointmentId);
 
 }

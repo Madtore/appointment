@@ -5,7 +5,11 @@
 
 package com.mindlink.service.appointment.services;
 
+import java.util.List;
+import java.util.Optional;
+
 import com.mindlink.service.appointment.models.User;
+import com.mindlink.service.appointment.models.dtos.UserDTO;
 
 /**
  *
@@ -13,6 +17,16 @@ import com.mindlink.service.appointment.models.User;
  */
 public interface UserService {
 
-    User create(User user);
+    User createUser(UserDTO userDTO);
+
+    Optional<User> getUserById(Long id);
+
+    public Optional<User> getUserByEmail(String email);
+
+    public List<User> getAllUsers();
+
+    User updateUser(Long id, UserDTO userDTO);
+
+    void deleteUser(Long id);
 
 }

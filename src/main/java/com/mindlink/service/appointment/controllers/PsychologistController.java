@@ -27,29 +27,16 @@ public class PsychologistController {
 
     @PostMapping
     public ResponseEntity<PsychologistDTO> createPsychologist(@RequestBody PsychologistDTO psychologistDTO) {
-        try {
-            return ResponseEntity.ok(psychologistService.createPsychologist(psychologistDTO));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
+        return null;
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<PsychologistDTO> getPsychologist(@PathVariable Long id) {
-        try {
-            return ResponseEntity.ok(psychologistService.getPsychologist(id));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
+        return null;
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletePsychologist(@PathVariable Long id) {
-        try {
-            psychologistService.deletePsychologist(id);
-            return ResponseEntity.ok().build();
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
+        return null;
     }
 }

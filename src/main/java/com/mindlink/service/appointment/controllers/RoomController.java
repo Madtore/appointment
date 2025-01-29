@@ -31,8 +31,7 @@ public class RoomController {
     public ResponseEntity<Boolean> verifyRoomPassword(
             @PathVariable String roomId,
             @RequestBody PasswordVerificationRequest request) {
-        boolean isValid = roomService.verifyPassword(roomId, request.getPassword());
-        return ResponseEntity.ok(isValid);
+        return null;
     }
 
     @MessageMapping("/join")

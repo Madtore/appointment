@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mindlink.service.appointment.models.dtos.AppointmentDTO;
@@ -34,8 +35,13 @@ public class AppointmentController {
         }
     }
 
+    @GetMapping("/test")
+    public String getAppointment() {
+        return "Hello";
+    }
+
     @GetMapping("/patient")
-    public ResponseEntity<List<AppointmentDTO>> getAppointmentByEmailPatient(@RequestBody String patientEmail) {
+    public ResponseEntity<List<AppointmentDTO>> getAppointmentByEmailPatient(@RequestParam String patientEmail) {
         try {
             return ResponseEntity.ok(appointmentService.getAppointmentByPatient(patientEmail));
         } catch (Exception e) {
@@ -45,7 +51,7 @@ public class AppointmentController {
 
     @GetMapping("/psychologist")
     public ResponseEntity<List<AppointmentDTO>> getAppointmentByEmailPsychologist(
-            @RequestBody String psychologistEmail) {
+            @RequestParam String psychologistEmail) {
         try {
             return ResponseEntity.ok(appointmentService.getAppointmentByPatient(psychologistEmail));
         } catch (Exception e) {

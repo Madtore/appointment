@@ -4,6 +4,7 @@ package com.mindlink.service.appointment.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,11 +36,12 @@ public class UserController {
 
     // GetMapping list all patients
     @GetMapping("/patients")
-    public ResponseEntity<List<PatientDTO>> getAllPatients() {
+    public ResponseEntity<?> getAllPatients() {
         try {
             return ResponseEntity.ok(patientService.getAllPatients());
         } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
+
         }
     }
 

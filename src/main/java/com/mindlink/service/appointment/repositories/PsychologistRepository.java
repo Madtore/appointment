@@ -5,6 +5,8 @@
 
 package com.mindlink.service.appointment.repositories;
 
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -16,5 +18,7 @@ import com.mindlink.service.appointment.models.Psychologist;
  */
 @Repository
 public interface PsychologistRepository extends JpaRepository<Psychologist, Long> {
+
+    Optional<Psychologist> findByUserEmail(String email);
 
 }

@@ -6,8 +6,10 @@
 package com.mindlink.service.appointment.repositories;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.mindlink.service.appointment.models.Appointment;
@@ -19,7 +21,10 @@ import com.mindlink.service.appointment.models.Appointment;
 @Repository
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
 
-    List<Appointment> findByPatientId(Long patientId);
+    @Query("SELECT a FROM Appointment a WHERE a.patient.user.email = ?1")
+    Optional<List<Appointment>> getAppointmentByPatient(String patientEmail);
 
-    List<Appointment> findByPsychologistId(Long psychologistId);
+    @Query("SELECT a FROM Appointment a WHERE a.psychologist.user.email = ?1")
+    Optional<List<Appointment>> getAppointmentByPsycologist(String psychologystEmail);
+
 }

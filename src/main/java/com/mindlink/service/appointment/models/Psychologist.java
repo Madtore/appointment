@@ -7,6 +7,7 @@ package com.mindlink.service.appointment.models;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import io.micrometer.common.lang.Nullable;
 import jakarta.persistence.Entity;
@@ -35,6 +36,10 @@ public class Psychologist {
     private Long id; // Refers to Users.id
 
     @NotNull
+    private String firstname;
+    @NotNull
+    private String lastname;
+    @NotNull
     private String licenseNumber;
     @NotNull
     private String specialization;
@@ -55,5 +60,10 @@ public class Psychologist {
     private LocalDate updatedAt;
     @Nullable
     private LocalDate deletedAt;
+
+    public Optional<Psychologist> stream() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'stream'");
+    }
 
 }

@@ -12,6 +12,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.mindlink.service.appointment.models.Appointment;
 import com.mindlink.service.appointment.models.Payment;
 import com.mindlink.service.appointment.repositories.PaymentRepository;
 import com.mindlink.service.appointment.services.PaymentService;
@@ -28,36 +29,14 @@ public class PaymentServiceImp implements PaymentService {
     @Autowired
     private PaymentRepository paymentRepository;
 
-    public Payment createPayment(Payment payment) {
+    @Transactional
+    @Override
+    public Payment createPayment(Appointment appointment, double amount) {
+        Payment payment = new Payment();
+        payment.setAppointment(appointment);
+        payment.setTotalAmount(amount);
         payment.setCreatedAt(LocalDate.now());
         return paymentRepository.save(payment);
     }
 
-    public Optional<Payment> getPaymentById(Long id) {
-        return paymentRepository.findById(id);
-    }
-
-    public List<Payment> getPaymentsByPatientId(Long patientId) {
-        return paymentRepository.findByPatientId(patientId);
-    }
-
-    public Payment updatePayment(Long id, Payment paymentDetails) {
-        Optional<Payment> existingPayment = paymentRepository.findById(id);
-        if (existingPayment.isPresent()) {
-            Payment payment = existingPayment.get();
-            payment.setTotalAmount(paymentDetails.getTotalAmount());
-            payment.setUpdatedAt(LocalDate.now());
-            return paymentRepository.save(payment);
-        }
-        return null;
-    }
-
-    @Transactional
-    public void deletePayment(Long id) {
-        Optional<Payment> payment = paymentRepository.findById(id);
-        if (payment.isPresent()) {
-            payment.get().setDeletedAt(LocalDate.now());
-            paymentRepository.save(payment.get());
-        }
-    }
 }

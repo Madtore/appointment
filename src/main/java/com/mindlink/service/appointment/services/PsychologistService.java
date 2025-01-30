@@ -6,7 +6,6 @@
 package com.mindlink.service.appointment.services;
 
 import java.util.List;
-import java.util.Optional;
 
 import com.mindlink.service.appointment.models.Psychologist;
 import com.mindlink.service.appointment.models.User;
@@ -22,9 +21,9 @@ public interface PsychologistService {
 
     User createUserForPsychologist(PsychologistDTO psychologistDTO);
 
-    List<Psychologist> getAllPsychologists();
+    List<PsychologistDTO> getAllPsychologists();
 
-    Optional<Psychologist> getPsychologistById(Long id);
+    PsychologistDTO getPsychologistByEmail(String email);
 
     Psychologist updatePsychologist(Long id, PsychologistDTO psychologistDTO);
 

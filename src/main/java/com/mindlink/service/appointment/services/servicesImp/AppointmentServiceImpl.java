@@ -5,72 +5,117 @@
 
 package com.mindlink.service.appointment.services.servicesImp;
 
-import com.mindlink.service.appointment.services.AppointmentService;
+import java.util.Collections;
+import java.util.List;
 
-import com.mindlink.service.appointment.models.*;
-import com.mindlink.service.appointment.models.dtos.*;
-import com.mindlink.service.appointment.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
+import com.mindlink.service.appointment.models.Appointment;
+import com.mindlink.service.appointment.models.Patient;
+import com.mindlink.service.appointment.models.Payment;
+import com.mindlink.service.appointment.models.Psychologist;
+import com.mindlink.service.appointment.models.dtos.AppointmentDTO;
+import com.mindlink.service.appointment.repositories.AppointmentRepository;
+import com.mindlink.service.appointment.repositories.PatientRepository;
+import com.mindlink.service.appointment.repositories.PsychologistRepository;
+import com.mindlink.service.appointment.services.AppointmentService;
+import com.mindlink.service.appointment.services.PaymentService;
+import com.mindlink.service.appointment.services.RoomService;
 
+/**
+ * @autor MadTore
+ */
 @Service
 public class AppointmentServiceImpl implements AppointmentService {
 
     @Autowired
     private AppointmentRepository appointmentRepository;
 
-    public Appointment createAppointment(AppointmentDTO appointmentDTO) {
+    @Autowired
+    private PsychologistRepository psychologistRepository;
+
+    @Autowired
+    private PatientRepository patientRepository;
+
+    @Autowired
+    private RoomService roomService;
+
+    @Autowired
+    private PaymentService paymentService;
+
+    @Override
+    public AppointmentDTO createAppointment(AppointmentDTO appointmentDTO) {
+        Psychologist psychologist = psychologistRepository.findByUserEmail(appointmentDTO.getEmailPsychologist())
+                .orElseThrow(() -> new RuntimeException("Psychologist not found"));
+
+        Patient patient = patientRepository.findByUserEmail(appointmentDTO.getEmailPatient())
+                .orElseThrow(() -> new RuntimeException("Patient not found"));
+
         Appointment appointment = new Appointment();
-        appointment.setPsychologist(appointmentDTO.getEmailPsychologist());
-        appointment.setPatient(appointmentDTO.getEmailPatient());
-        appointment.setTotalCost(appointmentDTO.getTotalCost());
         appointment.setAppointmentDate(appointmentDTO.getAppointmentDate());
-        appointment.setCreatedAt(LocalDate.now());
+        // emailPatient
+        appointment.setPatient(patient);
+        // emailPsychologist
+        appointment.setPsychologist(psychologist);
 
-        return appointmentRepository.save(appointment);
-    }
+        // totalCost
+        appointment.setTotalCost(appointmentDTO.getTotalCost());
+        // rating
+        appointment.setRating(0);
+        // feedback
+        appointment.setFeedback("");
+        // roomUrl
+        Payment payment = paymentService.createPayment(appointment, psychologist.getRatePerHour());
+        appointment.setPayment(payment);
+        appointment.setRoom(roomService.createRoom(appointment));
 
-    public List<Appointment> getAllAppointments() {
-        return appointmentRepository.findAll();
-    }
-
-    public Optional<Appointment> getAppointmentById(Long id) {
-        return appointmentRepository.findById(id);
-    }
-
-    public List<Appointment> getAppointmentsByPatient(Long patientId) {
-        return appointmentRepository.findByPatientId(patientId);
-    }
-
-    public List<Appointment> getAppointmentsByPsychologist(Long psychologistId) {
-        return appointmentRepository.findByPsychologistId(psychologistId);
-    }
-
-    public Appointment updateAppointment(Long id, AppointmentDTO appointmentDTO) {
-        Optional<Appointment> existingAppointment = appointmentRepository.findById(id);
-        if (existingAppointment.isPresent()) {
-            Appointment appointment = existingAppointment.get();
-            appointment.setTotalCost(appointmentDTO.getTotalCost());
-            appointment.setAppointmentDate(appointmentDTO.getAppointmentDate());
-            appointment.setRating(appointmentDTO.getRating());
-            appointment.setFeedback(appointmentDTO.getFeedback());
-            appointment.setUpdatedAt(LocalDate.now());
-            return appointmentRepository.save(appointment);
+        try {
+            appointmentRepository.save(appointment);
+        } catch (Exception e) {
+            throw new RuntimeException("Error creating appointment");
         }
-        return null;
+        return appointmentDTO;
     }
 
-    @Transactional
-    public void deleteAppointment(Long id) {
-        Optional<Appointment> appointment = appointmentRepository.findById(id);
-        if (appointment.isPresent()) {
-            appointment.get().setDeletedAt(LocalDate.now());
-            appointmentRepository.save(appointment.get());
-        }
+    @Override
+    public List<AppointmentDTO> getAppointmentByPatient(String patientEmail) {
+        return appointmentRepository.getAppointmentByPatient(patientEmail)
+                .orElse(Collections.emptyList())
+                .stream()
+                .map(
+                        appointment -> {
+                            AppointmentDTO dto = new AppointmentDTO();
+                            dto.setEmailPatient(appointment.getPatient().getUser().getEmail());
+                            dto.setEmailPsychologist(appointment.getPsychologist().getUser().getEmail());
+                            dto.setTotalCost(appointment.getTotalCost());
+                            dto.setAppointmentDate(appointment.getAppointmentDate());
+                            dto.setRating(appointment.getRating());
+                            dto.setFeedback(appointment.getFeedback());
+                            dto.setRoomUrl(appointment.getRoom());
+                            return dto;
+                        })
+                .toList();
     }
+
+    @Override
+    public List<AppointmentDTO> getAppointmentByPsycologist(String psychologistEmail) {
+        return appointmentRepository.getAppointmentByPsycologist(psychologistEmail)
+                .orElse(Collections.emptyList())
+                .stream()
+                .map(
+                        appointment -> {
+                            AppointmentDTO dto = new AppointmentDTO();
+                            dto.setEmailPatient(appointment.getPatient().getUser().getEmail());
+                            dto.setEmailPsychologist(appointment.getPsychologist().getUser().getEmail());
+                            dto.setTotalCost(appointment.getTotalCost());
+                            dto.setAppointmentDate(appointment.getAppointmentDate());
+                            dto.setRating(appointment.getRating());
+                            dto.setFeedback(appointment.getFeedback());
+                            dto.setRoomUrl(appointment.getRoom());
+                            return dto;
+                        })
+                .toList();
+    }
+
 }

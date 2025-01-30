@@ -91,4 +91,23 @@ public class PatientServiceImp implements PatientService {
             patientRepository.save(patient.get());
         }
     }
+
+    @Override
+    public PatientDTO getPatientByEmail(String email) {
+        PatientDTO patientDTO = patientRepository.findByUserEmail(email).map(
+                patient -> {
+                    PatientDTO dto = new PatientDTO();
+                    dto.setFirstname(patient.getFirstname());
+                    dto.setLastname(patient.getLastname());
+                    dto.setDateOfBirth(patient.getDateOfBirth());
+                    dto.setGender(patient.getGender());
+                    dto.setMedicalHistory(patient.getMedicalHistory() != null ? patient.getMedicalHistory() : "");
+                    dto.setEmail(patient.getUser().getEmail());
+                    dto.setCreatedAt(patient.getCreatedAt());
+                    dto.setUpdatedAt(patient.getUpdatedAt());
+                    return dto;
+                }).orElse(null);
+
+        return patientDTO;
+    }
 }

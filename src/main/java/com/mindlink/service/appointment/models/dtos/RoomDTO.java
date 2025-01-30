@@ -9,10 +9,6 @@ import lombok.Setter;
 @Setter
 public class RoomDTO {
 
-    private String emailPatient;
-    private String emailPsychologist;
-
     private String roomUrl;
-    private String password;
 
 }

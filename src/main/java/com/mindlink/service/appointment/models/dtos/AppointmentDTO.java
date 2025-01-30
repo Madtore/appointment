@@ -2,8 +2,6 @@ package com.mindlink.service.appointment.models.dtos;
 
 import java.time.LocalDate;
 
-import com.mindlink.service.appointment.models.Patient;
-import com.mindlink.service.appointment.models.Psychologist;
 import com.mindlink.service.appointment.models.Room;
 
 import io.micrometer.common.lang.Nullable;
@@ -19,9 +17,9 @@ import lombok.Setter;
 public class AppointmentDTO {
 
     @Email(message = "Email should be valid")
-    private Psychologist emailPsychologist;
+    private String emailPsychologist;
     @NotNull
-    private Patient emailPatient;
+    private String emailPatient;
     @NotNull
     private Double totalCost;
     @NotNull

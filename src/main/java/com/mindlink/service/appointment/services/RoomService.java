@@ -5,10 +5,8 @@
 
 package com.mindlink.service.appointment.services;
 
-import java.util.Optional;
-
+import com.mindlink.service.appointment.models.Appointment;
 import com.mindlink.service.appointment.models.Room;
-import com.mindlink.service.appointment.models.dtos.RoomDTO;
 
 /**
  *
@@ -16,10 +14,6 @@ import com.mindlink.service.appointment.models.dtos.RoomDTO;
  */
 public interface RoomService {
 
-    Room createRoom(RoomDTO roomDTO);
-
-    Optional<Room> getRoomByAppointmentId(Long appointmentId);
-
-    Room updateRoom(Long id, RoomDTO roomDTO);
+    Room createRoom(Appointment appointment);
 
 }

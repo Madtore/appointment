@@ -51,8 +51,40 @@ public class PsychologistServiceImp implements PsychologistService {
         return userService.createUser(userDTO);
     }
 
-    public List<Psychologist> getAllPsychologists() {
-        return psychologistRepository.findAll();
+    public PsychologistDTO getPsychologistByEmail(String email) {
+        PsychologistDTO psychologistDTO = psychologistRepository.findByUserEmail(email).map(
+                psychologist -> {
+                    PsychologistDTO dto = new PsychologistDTO();
+                    dto.setFirstname(psychologist.getFirstname());
+                    dto.setLastname(psychologist.getLastname());
+                    dto.setLicenseNumber(psychologist.getLicenseNumber());
+                    dto.setSpecialization(psychologist.getSpecialization());
+                    dto.setRatePerHour(psychologist.getRatePerHour());
+                    dto.setEmail(psychologist.getUser().getEmail());
+                    dto.setCreatedAt(psychologist.getCreatedAt());
+                    dto.setUpdatedAt(psychologist.getUpdatedAt());
+                    return dto;
+                }).orElse(null);
+
+        return psychologistDTO;
+
+    }
+
+    // GetMapping for psychologists with pagination
+    public List<PsychologistDTO> getAllPsychologists() {
+
+        return psychologistRepository.findAll().stream().map(psychologist -> {
+            PsychologistDTO psychologistDTO = new PsychologistDTO();
+            psychologistDTO.setFirstname(psychologist.getFirstname());
+            psychologistDTO.setLastname(psychologist.getLastname());
+            psychologistDTO.setLicenseNumber(psychologist.getLicenseNumber());
+            psychologistDTO.setSpecialization(psychologist.getSpecialization());
+            psychologistDTO.setRatePerHour(psychologist.getRatePerHour());
+            psychologistDTO.setEmail(psychologist.getUser().getEmail());
+            psychologistDTO.setCreatedAt(psychologist.getCreatedAt());
+            psychologistDTO.setUpdatedAt(psychologist.getUpdatedAt());
+            return psychologistDTO;
+        }).toList();
     }
 
     public Optional<Psychologist> getPsychologistById(Long id) {

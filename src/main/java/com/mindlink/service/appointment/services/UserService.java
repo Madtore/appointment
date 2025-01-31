@@ -5,28 +5,17 @@
 
 package com.mindlink.service.appointment.services;
 
-import java.util.List;
-import java.util.Optional;
-
-import com.mindlink.service.appointment.models.User;
-import com.mindlink.service.appointment.models.dtos.UserDTO;
+import com.mindlink.service.appointment.models.dtos.doctorDTO.DoctorRegistrationRequest;
+import com.mindlink.service.appointment.models.dtos.patientDTO.PatientRegistrationRequest;
 
 /**
  *
  * @author madtore
  */
+
 public interface UserService {
 
-    User createUser(UserDTO userDTO);
+    void createDoctor(DoctorRegistrationRequest request);
 
-    Optional<User> getUserById(Long id);
-
-    public Optional<User> getUserByEmail(String email);
-
-    public List<User> getAllUsers();
-
-    User updateUser(Long id, UserDTO userDTO);
-
-    void deleteUser(Long id);
-
+    void createPatient(PatientRegistrationRequest request);
 }

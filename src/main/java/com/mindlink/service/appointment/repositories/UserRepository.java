@@ -16,9 +16,10 @@ import com.mindlink.service.appointment.models.User;
  *
  * @author madtore
  */
+
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-
     Optional<User> findByEmail(String email);
 
+    boolean existsByEmail(String email);
 }

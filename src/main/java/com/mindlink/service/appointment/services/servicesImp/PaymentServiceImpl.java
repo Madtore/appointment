@@ -24,15 +24,19 @@ import jakarta.transaction.Transactional;
  * @author madtore
  */
 @Service
-public class PaymentServiceImp implements PaymentService {
+public class PaymentServiceImpl implements PaymentService {
 
-    @Autowired
     private PaymentRepository paymentRepository;
+
+    public PaymentServiceImpl(PaymentRepository paymentRepository) {
+        this.paymentRepository = paymentRepository;
+    }
 
     @Transactional
     @Override
     public Payment createPayment(Appointment appointment, double amount) {
         Payment payment = new Payment();
+        payment.setPatient(appointment.getPatient());
         payment.setAppointment(appointment);
         payment.setTotalAmount(amount);
         payment.setCreatedAt(LocalDate.now());

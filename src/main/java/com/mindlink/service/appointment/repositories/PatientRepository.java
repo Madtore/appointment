@@ -8,6 +8,8 @@ package com.mindlink.service.appointment.repositories;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.mindlink.service.appointment.models.Patient;
@@ -19,6 +21,7 @@ import com.mindlink.service.appointment.models.Patient;
 @Repository
 public interface PatientRepository extends JpaRepository<Patient, Long> {
 
-    Optional<Patient> findByUserEmail(String email);
+    @Query("SELECT p FROM Patient p WHERE p.email = :email")
+    Optional<Patient> findByUserEmail(@Param("email") String email);
 
 }

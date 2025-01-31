@@ -1,64 +1,25 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-
 package com.mindlink.service.appointment.models;
 
-import java.time.LocalDate;
-import java.util.List;
-
-import io.micrometer.common.lang.Nullable;
+import com.mindlink.service.appointment.utils.enums.Gender;
+import com.mindlink.service.appointment.utils.enums.UserRole;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
-import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
-/**
- *
- * @author madtore
- */
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
+import java.time.LocalDate;
+
 @Entity
-public class Patient {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id; // Refers to Users.id
+@Table(name = "patients")
+@Getter
+@Setter
+public class Patient extends User {
 
-    @NotNull
-    private String firstname;
-    @NotNull
-    private String lastname;
-    @NotNull
-    private LocalDate dateOfBirth;
-    @NotNull
-    private String gender;
+    public Patient() {
+    }
 
-    @Nullable
-    private String medicalHistory;
-
-    @OneToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
-    private User user;
-
-    @OneToMany(mappedBy = "patient")
-    private List<Appointment> appointments;
-
-    @NotNull
-    private LocalDate createdAt;
-
-    @Nullable
-    private LocalDate updatedAt;
-    @Nullable
-    private LocalDate deletedAt;
-
+    public Patient(String firstName, String lastName, String email, String password, LocalDate dateOfBirth,
+            Gender gender) {
+        super(firstName, lastName, email, password, UserRole.PATIENT, dateOfBirth, gender);
+    }
 }

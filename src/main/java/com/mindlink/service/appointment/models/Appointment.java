@@ -6,6 +6,7 @@
 package com.mindlink.service.appointment.models;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import io.micrometer.common.lang.Nullable;
 import jakarta.persistence.Entity;
@@ -15,6 +16,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -29,6 +31,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Table(name = "appointments")
 public class Appointment {
 
     @Id
@@ -37,7 +40,7 @@ public class Appointment {
 
     @ManyToOne
     @JoinColumn(name = "psychologist_id", nullable = false)
-    private Psychologist psychologist;
+    private Doctor doctor;
 
     @ManyToOne
     @JoinColumn(name = "patient_id", nullable = false)
@@ -45,7 +48,7 @@ public class Appointment {
     @NotNull
     private Double totalCost;
     @NotNull
-    private LocalDate appointmentDate;
+    private LocalDateTime appointmentDate;
 
     @Nullable
     private Integer rating;

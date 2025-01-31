@@ -6,6 +6,7 @@
 package com.mindlink.service.appointment.services.servicesImp;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +23,7 @@ import jakarta.transaction.Transactional;
  * @author madtore
  */
 @Service
-public class RoomServiceImp implements RoomService {
+public class RoomServiceImpl implements RoomService {
 
     @Autowired
     private RoomRepository roomRepository;
@@ -31,6 +32,7 @@ public class RoomServiceImp implements RoomService {
     @Override
     public Room createRoom(Appointment appointment) {
         Room room = new Room();
+        room.setRoomUrl(UUID.randomUUID().toString().substring(0, 20));
         room.setAppointment(appointment);
         room.setCreatedAt(LocalDate.now());
         return roomRepository.save(room);

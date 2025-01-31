@@ -21,10 +21,10 @@ import com.mindlink.service.appointment.models.Appointment;
 @Repository
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
 
-    @Query("SELECT a FROM Appointment a WHERE a.patient.user.email = ?1")
+    @Query("SELECT a FROM Appointment a WHERE a.patient.email = ?1")
     Optional<List<Appointment>> getAppointmentByPatient(String patientEmail);
 
-    @Query("SELECT a FROM Appointment a WHERE a.psychologist.user.email = ?1")
-    Optional<List<Appointment>> getAppointmentByPsycologist(String psychologystEmail);
+    @Query("SELECT a FROM Appointment a WHERE a.doctor.email = ?1")
+    Optional<List<Appointment>> getAppointmentByDoctor(String doctorEmail);
 
 }

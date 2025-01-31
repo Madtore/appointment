@@ -7,7 +7,8 @@ package com.mindlink.service.appointment.services;
 
 import java.util.List;
 
-import com.mindlink.service.appointment.models.dtos.AppointmentDTO;
+import com.mindlink.service.appointment.models.dtos.appointmentDTOs.AppointmentDTO;
+import com.mindlink.service.appointment.models.dtos.appointmentDTOs.AppointmentRegistrationDTO;
 
 /**
  *
@@ -15,9 +16,12 @@ import com.mindlink.service.appointment.models.dtos.AppointmentDTO;
  */
 public interface AppointmentService {
 
-    AppointmentDTO createAppointment(AppointmentDTO appointmentDTO);
+    public List<AppointmentDTO> getAppointmentByPatientEmail(String email);
 
-    List<AppointmentDTO> getAppointmentByPatient(String patientEmail);
+    public List<AppointmentDTO> getAppointmentByDoctorEmail(String email);
 
-    List<AppointmentDTO> getAppointmentByPsycologist(String patientEmail);
+    public void deleteAppointment(Long id);
+
+    public AppointmentRegistrationDTO createAppointment(AppointmentRegistrationDTO appointmentDTO);
+
 }

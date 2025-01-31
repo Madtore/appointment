@@ -5,10 +5,10 @@
 
 package com.mindlink.service.appointment.services;
 
-import java.util.List;
+import java.util.Optional;
 
 import com.mindlink.service.appointment.models.Patient;
-import com.mindlink.service.appointment.models.dtos.PatientDTO;
+import com.mindlink.service.appointment.models.dtos.patientDTO.PatientDTO;
 
 /**
  *
@@ -16,13 +16,8 @@ import com.mindlink.service.appointment.models.dtos.PatientDTO;
  */
 public interface PatientService {
 
-    Patient createPatient(PatientDTO patientDTO);
-
-    List<PatientDTO> getAllPatients();
-
-    Patient updatePatient(Long id, PatientDTO patientDTO);
+    Optional<Patient> findByUserEmail(String email);
 
     PatientDTO getPatientByEmail(String email);
 
-    void deletePatient(Long id);
 }

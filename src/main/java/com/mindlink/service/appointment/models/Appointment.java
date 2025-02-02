@@ -26,6 +26,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 /**
  *
@@ -38,6 +39,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Builder
 @Table(name = "appointments")
+@ToString(exclude = "room")
 public class Appointment {
 
     @Id
@@ -56,6 +58,7 @@ public class Appointment {
     @NotNull
     private LocalDateTime appointmentDate;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
     private SessionType sessionType;
 

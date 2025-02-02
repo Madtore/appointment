@@ -20,6 +20,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 /**
  *
@@ -30,6 +31,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "payments")
+@ToString(exclude = "appointment")
 public class Payment {
 
     @Id

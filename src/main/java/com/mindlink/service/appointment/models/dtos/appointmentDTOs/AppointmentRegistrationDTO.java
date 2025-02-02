@@ -4,21 +4,17 @@ import java.time.LocalDateTime;
 
 import com.mindlink.service.appointment.utils.enums.SessionType;
 
-import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Email;
-
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotNull;
 
 public record AppointmentRegistrationDTO(
-                @NotNull(message = "Doctor email cannot be null") @Email(message = "Invalid doctor email format") String doctorEmail,
+        @NotNull(message = "Doctor email cannot be null") @Email(message = "Invalid doctor email format") String doctorEmail,
 
-                @NotNull(message = "Patient email cannot be null") @Email(message = "Invalid patient email format") String patientEmail,
+        @NotNull(message = "Patient email cannot be null") @Email(message = "Invalid patient email format") String patientEmail,
 
-                @NotNull(message = "Appointment date cannot be null") @Future(message = "Appointment date must be in the future") LocalDateTime appointmentDate,
+        @NotNull(message = "Appointment date cannot be null") @Future(message = "Appointment date must be in the future") LocalDateTime appointmentDate,
 
-                @NotNull(message = "Session type cannot be null") @Enumerated SessionType sessionType,
-
-                @NotNull(message = "Total cost cannot be null") Double totalCost) {
+        @NotNull(message = "Session type cannot be null") SessionType sessionType) {
 
 }

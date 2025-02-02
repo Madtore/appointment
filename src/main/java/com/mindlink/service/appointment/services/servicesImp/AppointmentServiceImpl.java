@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mindlink.service.appointment.exceptions.AppontmentExeptions;
@@ -42,7 +41,6 @@ public class AppointmentServiceImpl implements AppointmentService {
     private PaymentService paymentService;
     private RoomService roomService;
 
-    @Autowired
     public AppointmentServiceImpl(AppointmentRepository appointmentRepository,
             PatientService patientService,
             DoctorService doctorService,
@@ -83,20 +81,15 @@ public class AppointmentServiceImpl implements AppointmentService {
                         "Patient with email " + appointmentDTO.patientEmail() + " not found"));
 
         Appointment appointment = buildAppointment(appointmentDTO, doctor, patient);
-
         appointment = appointmentRepository.save(appointment);
 
         Payment payment = paymentService.createPayment(appointment, doctor.getPriceHour());
         payment.setPatient(patient);
-
         appointment.setPayment(payment);
-
         Room room = roomService.createRoom(appointment);
-
         appointment.setRoom(room);
 
         appointment = appointmentRepository.save(appointment);
-
         return appointmentDTO;
     }
 
@@ -143,8 +136,9 @@ public class AppointmentServiceImpl implements AppointmentService {
         return Appointment.builder()
                 .appointmentDate(appointmentDTO.appointmentDate())
                 .doctor(doctor)
+                .sessionType(appointmentDTO.sessionType())
                 .patient(patient)
-                .totalCost(appointmentDTO.totalCost())
+                .totalCost(doctor.getPriceHour())
                 .createdAt(LocalDate.now())
                 .build();
     }
@@ -159,9 +153,9 @@ public class AppointmentServiceImpl implements AppointmentService {
         LocalDateTime oneHourBefore = appointmentTime.minusHours(1);
         LocalDateTime oneHourAfter = appointmentTime.plusHours(1);
         return !appointments.stream()
-                .filter(appointment1 -> {
-                    return !appointment1.appointmentDate().isBefore(oneHourBefore) &&
-                            !appointment1.appointmentDate().isAfter(oneHourAfter);
+                .filter(appointmentDt -> {
+                    return !appointmentDt.appointmentDate().isBefore(oneHourBefore) &&
+                            !appointmentDt.appointmentDate().isAfter(oneHourAfter);
                 })
                 .findFirst()
                 .isPresent();

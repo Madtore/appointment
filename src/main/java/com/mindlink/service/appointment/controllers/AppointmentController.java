@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mindlink.service.appointment.models.dtos.appointmentDTOs.AppointmentDTO;
 import com.mindlink.service.appointment.models.dtos.appointmentDTOs.AppointmentRegistrationDTO;
+import com.mindlink.service.appointment.models.dtos.appointmentDTOs.AppointmentUpdateDTO;
 import com.mindlink.service.appointment.services.AppointmentService;
 
 import jakarta.validation.Valid;
@@ -53,7 +55,7 @@ public class AppointmentController {
         }
     }
 
-    @PostMapping()
+    @PostMapping("/create")
     public ResponseEntity<?> createAppointment(
             @RequestBody AppointmentRegistrationDTO appointmentDTO) {
         try {
@@ -63,7 +65,16 @@ public class AppointmentController {
         }
     }
 
-    @DeleteMapping()
+    @PutMapping("/update")
+    public ResponseEntity<?> updateAppointment(@Valid @RequestBody AppointmentUpdateDTO appointmentDTO) {
+        try {
+            return ResponseEntity.ok(appointmentService.updateAppointment(appointmentDTO));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/delete")
     public ResponseEntity<?> deleteAppointment(@Valid @RequestParam Long id) {
         try {
             appointmentService.deleteAppointment(id);
@@ -74,48 +85,3 @@ public class AppointmentController {
     }
 
 }
-
-/*
- * @Autowired
- * private AppointmentService appointmentService;
- * 
- * @PostMapping
- * public ResponseEntity<AppointmentDTO> createAppointment(@RequestBody
- * AppointmentDTO appointmentDTO) {
- * try {
- * return
- * ResponseEntity.ok(appointmentService.createAppointment(appointmentDTO));
- * } catch (Exception e) {
- * return ResponseEntity.badRequest().build();
- * }
- * }
- * 
- * @GetMapping("/test")
- * public String getAppointment() {
- * return "Hello";
- * }
- * 
- * @GetMapping("/patient")
- * public ResponseEntity<List<AppointmentDTO>>
- * getAppointmentByEmailPatient(@RequestParam String patientEmail) {
- * try {
- * return
- * ResponseEntity.ok(appointmentService.getAppointmentByPatient(patientEmail));
- * } catch (Exception e) {
- * return ResponseEntity.badRequest().build();
- * }
- * }
- * 
- * @GetMapping("/psychologist")
- * public ResponseEntity<List<AppointmentDTO>>
- * getAppointmentByEmailPsychologist(
- * 
- * @RequestParam String psychologistEmail) {
- * try {
- * return ResponseEntity.ok(appointmentService.getAppointmentByPatient(
- * psychologistEmail));
- * } catch (Exception e) {
- * return ResponseEntity.badRequest().build();
- * }
- * }
- */

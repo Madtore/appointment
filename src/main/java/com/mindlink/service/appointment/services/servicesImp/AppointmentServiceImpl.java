@@ -13,6 +13,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.mindlink.service.appointment.exceptions.AppontmentExeptions;
 import com.mindlink.service.appointment.models.Appointment;
 import com.mindlink.service.appointment.models.Doctor;
 import com.mindlink.service.appointment.models.Patient;
@@ -20,15 +21,14 @@ import com.mindlink.service.appointment.models.Payment;
 import com.mindlink.service.appointment.models.Room;
 import com.mindlink.service.appointment.models.dtos.appointmentDTOs.AppointmentDTO;
 import com.mindlink.service.appointment.models.dtos.appointmentDTOs.AppointmentRegistrationDTO;
-import com.mindlink.service.appointment.models.dtos.maps.AppointmentMaps;
+import com.mindlink.service.appointment.models.dtos.appointmentDTOs.AppointmentUpdateDTO;
+import com.mindlink.service.appointment.models.dtos.maps.AppointmentMapper;
 import com.mindlink.service.appointment.repositories.AppointmentRepository;
 import com.mindlink.service.appointment.services.AppointmentService;
 import com.mindlink.service.appointment.services.DoctorService;
 import com.mindlink.service.appointment.services.PatientService;
 import com.mindlink.service.appointment.services.PaymentService;
 import com.mindlink.service.appointment.services.RoomService;
-
-import jakarta.transaction.Transactional;
 
 /**
  * @autor MadTore
@@ -60,55 +60,41 @@ public class AppointmentServiceImpl implements AppointmentService {
         try {
             Optional<Appointment> appointment = appointmentRepository.findById(id);
             if (appointment.isPresent()) {
-                appointmentRepository.delete(appointment.get());
+                appointment.get().setDeletedAt(LocalDate.now());
+                appointmentRepository.save(appointment.get());
             } else {
-                throw new RuntimeException("Appointment not found");
+                throw new AppontmentExeptions("Appointment not found");
             }
         } catch (Exception e) {
-            throw new RuntimeException("Error deleting appointment");
+            throw new AppontmentExeptions("Error deleting appointment");
         }
     }
 
     public AppointmentRegistrationDTO createAppointment(AppointmentRegistrationDTO appointmentDTO) {
-        // Trova il dottore e il paziente
+        if (!isAppointmentHourValid(appointmentDTO.appointmentDate(), appointmentDTO.doctorEmail())) {
+            throw new AppontmentExeptions("Appointment hour is not valid");
+        }
         Doctor doctor = doctorService.findByUserEmail(appointmentDTO.doctorEmail())
                 .orElseThrow(
-                        () -> new RuntimeException("Doctor with email " + appointmentDTO.doctorEmail() + " not found"));
+                        () -> new AppontmentExeptions(
+                                "Doctor with email " + appointmentDTO.doctorEmail() + " not found"));
         Patient patient = patientService.findByUserEmail(appointmentDTO.patientEmail())
-                .orElseThrow(() -> new RuntimeException(
+                .orElseThrow(() -> new AppontmentExeptions(
                         "Patient with email " + appointmentDTO.patientEmail() + " not found"));
 
-        // Crea l'appuntamento
-        Appointment appointment = new Appointment();
-        appointment.setAppointmentDate(appointmentDTO.appointmentDate());
-        appointment.setPatient(patient);
-        appointment.setDoctor(doctor);
-        appointment.setTotalCost(appointmentDTO.totalCost());
+        Appointment appointment = buildAppointment(appointmentDTO, doctor, patient);
 
-        // Imposta la data di creazione
-        appointment.setCreatedAt(LocalDate.now()); // Assicurati che la data venga impostata correttamente
-
-        // Salva l'appuntamento
         appointment = appointmentRepository.save(appointment);
 
-        // Crea il pagamento e imposta il paziente nel pagamento
         Payment payment = paymentService.createPayment(appointment, doctor.getPriceHour());
-        payment.setPatient(patient); // Imposta il paziente nel pagamento
-
-        if (payment == null) {
-            throw new RuntimeException("Payment creation failed for appointment");
-        }
+        payment.setPatient(patient);
 
         appointment.setPayment(payment);
 
-        // Crea la stanza
         Room room = roomService.createRoom(appointment);
-        if (room == null) {
-            throw new RuntimeException("Room creation failed for appointment");
-        }
+
         appointment.setRoom(room);
 
-        // Salva nuovamente l'appuntamento con il pagamento e la stanza
         appointment = appointmentRepository.save(appointment);
 
         return appointmentDTO;
@@ -117,23 +103,68 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Override
     public List<AppointmentDTO> getAppointmentByPatientEmail(String email) {
         Optional<List<Appointment>> list = appointmentRepository.getAppointmentByPatient(email);
-        return list.orElseThrow(() -> new RuntimeException("Appointments not found"))
+
+        return list.orElseThrow(() -> new AppontmentExeptions("Appointments not found"))
                 .stream()
                 .map(appointment -> {
-                    return AppointmentMaps.AppointmentToDTO(appointment);
+                    return AppointmentMapper.appointmentToDTO(appointment);
                 })
+                .filter(appointment -> !appointment.isDeleted())
                 .toList();
     }
 
     @Override
     public List<AppointmentDTO> getAppointmentByDoctorEmail(String email) {
         Optional<List<Appointment>> list = appointmentRepository.getAppointmentByDoctor(email);
-        return list.orElseThrow(() -> new RuntimeException("Appointments not found"))
+        System.out.println(list.toString());
+        return list.orElseThrow(() -> new AppontmentExeptions("Appointments not found"))
                 .stream()
                 .map(appointment -> {
-                    return AppointmentMaps.AppointmentToDTO(appointment);
+                    return AppointmentMapper.appointmentToDTO(appointment);
                 })
+                .filter(appointment -> !appointment.isDeleted())
                 .toList();
+    }
+
+    @Override
+    public AppointmentDTO updateAppointment(AppointmentUpdateDTO appointmentDTO) {
+        Optional<Appointment> appointment = Optional.ofNullable(appointmentRepository.findById(appointmentDTO.id())
+                .orElseThrow(() -> new AppontmentExeptions("Appointment not found")));
+
+        Optional.ofNullable(appointmentDTO.rating()).ifPresent(appointment.get()::setRating);
+        Optional.ofNullable(appointmentDTO.feedback()).ifPresent(appointment.get()::setFeedback);
+        Optional.ofNullable(appointmentDTO.appointmentDate()).ifPresent(appointment.get()::setAppointmentDate);
+
+        appointment.get().setUpdatedAt(LocalDate.now());
+        return AppointmentMapper.appointmentToDTO(appointmentRepository.save(appointment.get()));
+    }
+
+    private Appointment buildAppointment(AppointmentRegistrationDTO appointmentDTO, Doctor doctor, Patient patient) {
+        return Appointment.builder()
+                .appointmentDate(appointmentDTO.appointmentDate())
+                .doctor(doctor)
+                .patient(patient)
+                .totalCost(appointmentDTO.totalCost())
+                .createdAt(LocalDate.now())
+                .build();
+    }
+
+    private boolean isAppointmentHourValid(LocalDateTime appointementDateTime, String doctorEmail) {
+        LocalDateTime appointmentTime = appointementDateTime;
+        LocalDateTime now = LocalDateTime.now();
+        if (appointmentTime.isBefore(now)) {
+            return false;
+        }
+        List<AppointmentDTO> appointments = getAppointmentByDoctorEmail(doctorEmail);
+        LocalDateTime oneHourBefore = appointmentTime.minusHours(1);
+        LocalDateTime oneHourAfter = appointmentTime.plusHours(1);
+        return !appointments.stream()
+                .filter(appointment1 -> {
+                    return !appointment1.appointmentDate().isBefore(oneHourBefore) &&
+                            !appointment1.appointmentDate().isAfter(oneHourAfter);
+                })
+                .findFirst()
+                .isPresent();
     }
 
 }

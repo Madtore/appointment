@@ -10,7 +10,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.mindlink.service.appointment.models.Patient;
-import com.mindlink.service.appointment.models.dtos.maps.PatientMaps;
+import com.mindlink.service.appointment.models.dtos.maps.PatientMapper;
 import com.mindlink.service.appointment.models.dtos.patientDTO.PatientDTO;
 import com.mindlink.service.appointment.repositories.PatientRepository;
 import com.mindlink.service.appointment.services.PatientService;
@@ -38,7 +38,7 @@ public class PatientServiceImpl implements PatientService {
     public PatientDTO getPatientByEmail(String email) {
         Optional<Patient> patient = patientRepository.findByUserEmail(email);
         if (patient.isPresent()) {
-            return PatientMaps.patientToDTo(patient.get());
+            return PatientMapper.patientToDTo(patient.get());
         } else {
             throw new RuntimeException("Patient not found");
         }

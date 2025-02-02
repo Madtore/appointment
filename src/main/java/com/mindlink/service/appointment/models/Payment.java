@@ -7,7 +7,6 @@ package com.mindlink.service.appointment.models;
 
 import java.time.LocalDate;
 
-import io.micrometer.common.lang.Nullable;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

@@ -9,6 +9,7 @@ import java.util.List;
 
 import com.mindlink.service.appointment.models.dtos.appointmentDTOs.AppointmentDTO;
 import com.mindlink.service.appointment.models.dtos.appointmentDTOs.AppointmentRegistrationDTO;
+import com.mindlink.service.appointment.models.dtos.appointmentDTOs.AppointmentUpdateDTO;
 
 /**
  *
@@ -16,12 +17,14 @@ import com.mindlink.service.appointment.models.dtos.appointmentDTOs.AppointmentR
  */
 public interface AppointmentService {
 
-    public List<AppointmentDTO> getAppointmentByPatientEmail(String email);
+    List<AppointmentDTO> getAppointmentByPatientEmail(String email);
 
-    public List<AppointmentDTO> getAppointmentByDoctorEmail(String email);
+    List<AppointmentDTO> getAppointmentByDoctorEmail(String email);
 
-    public void deleteAppointment(Long id);
+    void deleteAppointment(Long id);
 
-    public AppointmentRegistrationDTO createAppointment(AppointmentRegistrationDTO appointmentDTO);
+    AppointmentRegistrationDTO createAppointment(AppointmentRegistrationDTO appointmentDTO);
+
+    AppointmentDTO updateAppointment(AppointmentUpdateDTO appointmentDTO);
 
 }

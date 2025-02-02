@@ -8,8 +8,12 @@ package com.mindlink.service.appointment.models;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import com.mindlink.service.appointment.utils.enums.SessionType;
+
 import io.micrometer.common.lang.Nullable;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -19,6 +23,7 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -31,6 +36,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Builder
 @Table(name = "appointments")
 public class Appointment {
 
@@ -39,7 +45,7 @@ public class Appointment {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "psychologist_id", nullable = false)
+    @JoinColumn(name = "doctor_id", nullable = false)
     private Doctor doctor;
 
     @ManyToOne
@@ -50,6 +56,9 @@ public class Appointment {
     @NotNull
     private LocalDateTime appointmentDate;
 
+    @Enumerated(EnumType.STRING)
+    private SessionType sessionType;
+
     @Nullable
     private Integer rating;
 
@@ -57,10 +66,10 @@ public class Appointment {
     private String feedback;
 
     @OneToOne(mappedBy = "appointment")
-    private Room room; // Relación con Room
+    private Room room;
 
     @OneToOne(mappedBy = "appointment")
-    private Payment payment; // Relación con Payment
+    private Payment payment;
 
     @NotNull
     private LocalDate createdAt;

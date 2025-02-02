@@ -5,7 +5,9 @@
 
 package com.mindlink.service.appointment.services;
 
+import com.mindlink.service.appointment.models.dtos.doctorDTO.DoctorDTO;
 import com.mindlink.service.appointment.models.dtos.doctorDTO.DoctorRegistrationRequest;
+import com.mindlink.service.appointment.models.dtos.patientDTO.PatientDTO;
 import com.mindlink.service.appointment.models.dtos.patientDTO.PatientRegistrationRequest;
 
 /**
@@ -15,7 +17,7 @@ import com.mindlink.service.appointment.models.dtos.patientDTO.PatientRegistrati
 
 public interface UserService {
 
-    void createDoctor(DoctorRegistrationRequest request);
+    DoctorDTO createDoctor(DoctorRegistrationRequest request);
 
-    void createPatient(PatientRegistrationRequest request);
+    PatientDTO createPatient(PatientRegistrationRequest request);
 }

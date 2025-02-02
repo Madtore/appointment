@@ -9,7 +9,11 @@ import org.springframework.stereotype.Service;
 
 import com.mindlink.service.appointment.models.Doctor;
 import com.mindlink.service.appointment.models.Patient;
+import com.mindlink.service.appointment.models.dtos.doctorDTO.DoctorDTO;
 import com.mindlink.service.appointment.models.dtos.doctorDTO.DoctorRegistrationRequest;
+import com.mindlink.service.appointment.models.dtos.maps.DoctorMapper;
+import com.mindlink.service.appointment.models.dtos.maps.PatientMapper;
+import com.mindlink.service.appointment.models.dtos.patientDTO.PatientDTO;
 import com.mindlink.service.appointment.models.dtos.patientDTO.PatientRegistrationRequest;
 import com.mindlink.service.appointment.repositories.UserRepository;
 import com.mindlink.service.appointment.services.UserService;
@@ -27,7 +31,7 @@ public class UserServiceImpl implements UserService {
         this.userRepository = userRepository;
     }
 
-    public void createPatient(PatientRegistrationRequest request) {
+    public PatientDTO createPatient(PatientRegistrationRequest request) {
 
         Patient patient = new Patient(
                 request.getFirstName(),
@@ -38,10 +42,11 @@ public class UserServiceImpl implements UserService {
                 request.getGender());
 
         userRepository.save(patient);
+        return PatientMapper.patientToDTo(patient);
     }
 
     @Override
-    public void createDoctor(DoctorRegistrationRequest request) {
+    public DoctorDTO createDoctor(DoctorRegistrationRequest request) {
 
         Doctor doctor = new Doctor(
                 request.getFirstName(),
@@ -55,5 +60,6 @@ public class UserServiceImpl implements UserService {
                 request.priceHour());
 
         userRepository.save(doctor);
+        return DoctorMapper.doctorToDTo(doctor);
     }
 }

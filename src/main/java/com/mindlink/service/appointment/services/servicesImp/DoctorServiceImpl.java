@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.mindlink.service.appointment.models.Doctor;
 import com.mindlink.service.appointment.models.dtos.doctorDTO.DoctorDTO;
-import com.mindlink.service.appointment.models.dtos.maps.DoctorMaps;
+import com.mindlink.service.appointment.models.dtos.maps.DoctorMapper;
 import com.mindlink.service.appointment.repositories.DoctorRepository;
 import com.mindlink.service.appointment.services.DoctorService;
 
@@ -29,7 +29,7 @@ public class DoctorServiceImpl implements DoctorService {
     public DoctorDTO getDoctorByEmail(String email) {
         Optional<Doctor> doctor = doctorRepository.findByUserEmail(email);
         if (doctor.isPresent()) {
-            return DoctorMaps.doctorToDTo(doctor.get());
+            return DoctorMapper.doctorToDTo(doctor.get());
         } else {
             throw new RuntimeException("Patient not found");
         }
